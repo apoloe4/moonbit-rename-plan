@@ -1,0 +1,31 @@
+{
+  "node": "v24.17.0",
+  "platform": "win32",
+  "results": [
+    {
+      "entries": 10,
+      "steps": 11,
+      "planMilliseconds": 6.95,
+      "recoveryMilliseconds": 2.18
+    },
+    {
+      "entries": 100,
+      "steps": 101,
+      "planMilliseconds": 9.09,
+      "recoveryMilliseconds": 15.74
+    },
+    {
+      "entries": 500,
+      "steps": 501,
+      "planMilliseconds": 21.43,
+      "recoveryMilliseconds": 183.7
+    },
+    {
+      "entries": 1000,
+      "steps": 1001,
+      "planMilliseconds": 47.62,
+      "recoveryMilliseconds": 711.29
+    }
+  ],
+  "note": "Single local run; includes JSON parsing/rendering. Not a performance guarantee."
+}
