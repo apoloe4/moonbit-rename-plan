@@ -1,0 +1,30 @@
+name: Verify MoonBit library and adapters
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: moon version --all
+      - run: moon fmt --check
+      - run: moon check --target js --deny-warn
+      - run: moon check --target wasm-gc --deny-warn
+      - run: moon test --target js --deny-warn
+      - run: moon test --target wasm-gc --deny-warn
+      - run: moon run cmd/demo --target wasm-gc
+      - run: moon info
+      - run: npm run build
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: moonrename-web
+          path: web/
