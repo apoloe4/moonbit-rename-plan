@@ -1,0 +1,13 @@
+import {
+  "moonbitlang/core/json",
+}
+
+options(
+  "is-main": false,
+  link: {
+    "js": {
+      "exports": [ "plan_json", "recover_json", "rules_json", "journal_json" ],
+      "format": "esm",
+    },
+  },
+)

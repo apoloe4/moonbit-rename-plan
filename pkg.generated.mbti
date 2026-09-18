@@ -1,0 +1,185 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "apoloe4/rename_plan"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn audit_plan(Plan) -> PlanAudit
+
+pub fn build_plan(Array[Entry], Array[Rename], NamePolicy) -> Plan
+
+pub fn default_rule() -> NameRule
+
+pub fn dependency_components(Array[Rename], NamePolicy) -> Array[Component]
+
+pub fn filename_problem(String) -> String?
+
+pub fn generate_mappings(Array[Entry], NameRule) -> Array[Rename] raise PlanningError
+
+pub fn inspect_journal(Plan, Array[Receipt]) -> JournalState
+
+pub fn journal_json(String, String, String) -> String
+
+pub fn name_key(String, NamePolicy) -> String
+
+pub fn plan_json(String) -> String
+
+pub fn reconcile_journal(Plan, Array[Receipt], Array[Entry]) -> Reconciliation raise PlanningError
+
+pub fn recover(Plan, Array[Entry]) -> Recovery raise PlanningError
+
+pub fn recover_from_checkpoint(Plan, Array[Entry], Int) -> Recovery raise PlanningError
+
+pub fn recover_json(String, String) -> String
+
+pub fn render_dot(Plan) -> String
+
+pub fn render_markdown(Plan) -> String
+
+pub fn replace_literal(String, String, String) -> String
+
+pub fn replay(Array[Entry], Array[Step], NamePolicy) -> Array[Entry] raise PlanningError
+
+pub fn reverse_steps(Array[Step]) -> Array[Step]
+
+pub fn rules_json(String) -> String
+
+pub fn simulate(Plan, Int) -> Simulation raise PlanningError
+
+pub fn snapshot_diff(Array[Entry], Array[Entry]) -> Array[Difference]
+
+pub fn step_receipt(Step, String) -> Receipt
+
+pub fn validate_request(Array[Entry], Array[Rename], NamePolicy) -> Array[Problem]
+
+pub fn verify_boundaries(Plan) -> Array[BoundaryCheck] raise PlanningError
+
+// Errors
+pub(all) suberror PlanningError {
+  Invalid(String)
+}
+
+// Types and methods
+pub(all) struct BoundaryCheck {
+  completed : Int
+  forwardOk : Bool
+  rollbackOk : Bool
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Component {
+  kind : String
+  sources : Array[String]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Difference {
+  kind : String
+  name : String
+  expected : String
+  observed : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Entry {
+  name : String
+  identity : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct JournalState {
+  valid : Bool
+  acknowledged : Int
+  pending : Bool
+  attempts : Int
+  failures : Int
+  errors : Array[String]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum NamePolicy {
+  Exact
+  AsciiFold
+} derive(Eq, @debug.Debug)
+
+pub(all) struct NameRule {
+  prefix : String
+  suffix : String
+  find : String
+  replacement : String
+  extension : String?
+  sequenceStart : Int?
+  sequenceWidth : Int
+  onlySuffix : String?
+  caseMode : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct Plan {
+  policy : NamePolicy
+  initial : Array[Entry]
+  desired : Array[Entry]
+  steps : Array[Step]
+  problems : Array[Problem]
+  skipped : Int
+  temporaryNames : Array[String]
+} derive(@debug.Debug)
+
+pub(all) struct PlanAudit {
+  valid : Bool
+  errors : Array[String]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Problem {
+  code : String
+  name : String
+  detail : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Receipt {
+  step : Int
+  source : String
+  target : String
+  identity : String
+  event : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Reconciliation {
+  status : String
+  acknowledged : Int
+  observedCompleted : Int?
+  nextReceipt : Receipt?
+  continueSteps : Array[Step]
+  rollback : Array[Step]
+  differences : Array[Difference]
+  errors : Array[String]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Recovery {
+  status : String
+  matchingPrefixes : Array[Int]
+  nearestPrefix : Int
+  differences : Array[Difference]
+  continueSteps : Array[Step]
+  rollback : Array[Step]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Rename {
+  source : String
+  target : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Simulation {
+  completed : Int
+  snapshot : Array[Entry]
+  remaining : Array[Step]
+  rollback : Array[Step]
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Step {
+  index : Int
+  source : String
+  target : String
+  identity : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug)
+
+// Type aliases
+
+// Traits
