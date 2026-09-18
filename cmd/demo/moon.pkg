@@ -1,0 +1,5 @@
+import {
+  "apoloe4/rename_plan" @planner,
+}
+
+pkgtype(kind: "executable")
