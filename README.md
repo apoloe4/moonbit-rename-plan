@@ -31,6 +31,8 @@ node cli.mjs recover examples/swap.json examples/interrupted.json
 node cli.mjs reconcile examples/swap.json examples/pending-journal.json examples/interrupted.json
 ```
 
+网页默认使用可视化编辑：选择同一文件夹中的全部文件，直接修改目标名称，或通过表单填写前后缀、替换、编号和扩展名规则，再点击“生成改名预览”。文件内容仅在本地计算 SHA-256，不上传、不修改；单文件限 64 MiB、合计限 128 MiB、最多 1000 项。未选中的文件无法参与冲突检查，同内容文件可能造成恢复歧义。JSON 收在高级面板中，仍可直接编辑。
+
 网页示例覆盖交换、循环、占用冲突、大小写改名、相同内容歧义和规则编号。拖动中断点，可查看当前快照与回退步骤；点击“用此快照检查恢复”，再修改 identity，观察恢复分析如何拒绝不一致的现场。
 
 CLI JSON 输出到 stdout，错误信息到 stderr。退出码：0 表示可用/匹配，1 表示 blocked/diverged/ambiguous/invalid-journal，2 表示输入或 IO 错误。0 不表示执行过改名。
