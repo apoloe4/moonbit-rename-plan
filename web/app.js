@@ -1,3 +1,4 @@
+import {initEditor} from './editor.js';
 import {samples} from './samples.js';
 const $=id=>document.getElementById(id);
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -29,8 +30,8 @@ function render(result){
  plan=result;simulation=result.simulation??null;
  $('recovery').textContent=result.status==='ready'?'可使用当前模拟快照，或粘贴现场快照进行分析。':'请先解决计划中的冲突。';
  $('steps-count').textContent=result.stepCount;$('temp-count').textContent=result.temporaryNames.length;$('skip-count').textContent=result.skipped;
- $('problems').textContent=result.problems.map(p=>`${p.code} · ${p.name}：${p.detail}`).join('\n');
- $('components').innerHTML=result.components.map(c=>`<span>${escape(c.kind)} · ${c.sources.length} 个名称</span>`).join('');
+ $('problems').textContent=result.problems.map(p=>`${({limit:'条目数量超限',invalid_name:'文件名不合法',identity:'文件身份不合法',snapshot_collision:'现有名称发生冲突',duplicate_source:'同一文件重复指定',duplicate_target:'多个文件使用同一目标名称',missing_source:'找不到来源文件',source_spelling:'来源名称拼写不一致',occupied_target:'目标名称已被其他文件占用'}[p.code]??p.code)} · ${p.name}（${p.detail}）`).join('\n');
+ $('components').innerHTML=result.components.map(c=>`<span>${escape({cycle:'循环依赖',chain:'顺序改名'}[c.kind]??c.kind)} · ${c.sources.length} 个名称</span>`).join('');
  const completed=simulation?.completed??0;
  $('steps').innerHTML=result.steps.slice(0,250).map(s=>`<li class="${s.index<completed?'done':''}"><span class="num">${s.index+1}</span><span class="route">${escape(s.source)}<em>→</em>${escape(s.target)}</span><span class="reason">${escape({park:'暂存',direct:'移动',release:'就位'}[s.reason]??s.reason)}</span></li>`).join('')||'<li class="placeholder">'+(result.status==='blocked'?'存在冲突，未生成操作序列。':'无需改名。')+'</li>';
  $('step-note').textContent=result.steps.length>250?'展示前 250 步；导出包含完整计划。':'步骤必须按顺序执行，每一步都要求目标名称未被占用。';
@@ -46,7 +47,7 @@ function renderRecovery(result){
  $('recovery').textContent=[labels[result.status]??result.status,`匹配已完成步数：${result.matchingPrefixes?.join(', ')||'无'}`,result.differences?.length?'差异：\n'+result.differences.map(d=>`${d.kind} · ${d.name} (${d.expected} → ${d.observed})`).join('\n'):'',result.continueSteps?.length?'继续：\n'+result.continueSteps.map(s=>`${s.source} → ${s.target}`).join('\n'):'',result.rollback?.length?'回退：\n'+result.rollback.map(s=>`${s.source} → ${s.target}`).join('\n'):''].filter(Boolean).join('\n\n');
  notify('现场恢复分析完成。',result.status==='diverged'||result.status==='ambiguous'?'error':'ready');
 }
-function loadSample(){invalidate();$('request').value=JSON.stringify(samples[$('sample').value],null,2);$('observed').value='';request('plan');}
+function loadSample(){invalidate();$('request').value=JSON.stringify(samples[$('sample').value],null,2);$('observed').value='';$('request').dispatchEvent(new Event('change'));request('plan');}
 $('request').oninput=()=>{invalidate();notify('输入已修改，请重新生成计划。');};
 $('observed').oninput=()=>{$('recovery').textContent='现场快照已修改，请重新分析。';if(worker){serial++;worker.terminate();worker=null;$('run').disabled=false;}};
 $('load-sample').onclick=loadSample;$('run').onclick=()=>{invalidate();request('plan');};
@@ -58,4 +59,5 @@ $('export-json').onclick=()=>plan&&download(JSON.stringify(plan,null,2),'applica
 $('export-md').onclick=()=>plan&&download(plan.markdown,'text/markdown','moonrename-plan.md');
 $('export-dot').onclick=()=>plan&&download(plan.dot,'text/plain','moonrename-plan.dot');
 loadSample();
+initEditor();
 
