@@ -1,0 +1,19 @@
+{
+  "policy": "ascii-fold",
+  "entries": [
+    {
+      "name": "photo.jpg",
+      "identity": "A"
+    },
+    {
+      "name": "ARCHIVE.jpg",
+      "identity": "B"
+    }
+  ],
+  "mappings": [
+    {
+      "source": "photo.jpg",
+      "target": "archive.jpg"
+    }
+  ]
+}

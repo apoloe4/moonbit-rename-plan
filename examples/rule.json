@@ -1,0 +1,26 @@
+{
+  "policy": "ascii-fold",
+  "entries": [
+    {
+      "name": "IMG_002.JPG",
+      "identity": "image2"
+    },
+    {
+      "name": "IMG_001.JPG",
+      "identity": "image1"
+    },
+    {
+      "name": "notes.txt",
+      "identity": "note"
+    }
+  ],
+  "rule": {
+    "prefix": "trip-",
+    "find": "IMG_",
+    "replacement": "",
+    "sequenceStart": 1,
+    "sequenceWidth": 2,
+    "onlySuffix": ".JPG",
+    "caseMode": "lower"
+  }
+}

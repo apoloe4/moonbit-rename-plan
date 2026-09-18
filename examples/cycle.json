@@ -1,0 +1,36 @@
+{
+  "policy": "exact",
+  "entries": [
+    {
+      "name": "a.txt",
+      "identity": "A"
+    },
+    {
+      "name": "b.txt",
+      "identity": "B"
+    },
+    {
+      "name": "c.txt",
+      "identity": "C"
+    },
+    {
+      "name": "keep.txt",
+      "identity": "K"
+    }
+  ],
+  "mappings": [
+    {
+      "source": "a.txt",
+      "target": "b.txt"
+    },
+    {
+      "source": "b.txt",
+      "target": "c.txt"
+    },
+    {
+      "source": "c.txt",
+      "target": "a.txt"
+    }
+  ],
+  "verify": true
+}

@@ -1,0 +1,23 @@
+{
+  "policy": "exact",
+  "entries": [
+    {
+      "name": "left.txt",
+      "identity": "same-content"
+    },
+    {
+      "name": "right.txt",
+      "identity": "same-content"
+    }
+  ],
+  "mappings": [
+    {
+      "source": "left.txt",
+      "target": "right.txt"
+    },
+    {
+      "source": "right.txt",
+      "target": "left.txt"
+    }
+  ]
+}
